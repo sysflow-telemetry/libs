@@ -1,14 +1,24 @@
 FROM debian:buster
 
+ARG FALCOSECURITY_LIBS_DRIVER_VERSION
+ARG FALCOSECURITY_LIBS_VERSION
+ARG FALCOSECURITY_LIBS_CHECKSUM
+ARG DRIVER_PACKAGE_NAME=falco
+
+LABEL "name"="Base image for Libs consumers containing the Falco driver loader"
+LABEL "vendor"="Falco"
+LABEL "version"="${FALCOSECURITY_LIBS_VERSION}"
+LABEL "release"="${FALCOSECURITY_LIBS_VERSION}"
+LABEL "summary"="Falco drivers implement the probes for system event collection used by Libs consumers."
+LABEL "description"="Falco drivers implement the probes for system event collection used by Libs consumers"
+LABEL "io.k8s.display-name"="Falco Drivers"
+LABEL "io.k8s.description"="Falco drivers implement the probes for system event collection used by Libs consumers"
 LABEL maintainer="cncf-falco-dev@lists.cncf.io"
+LABEL usage="docker build --build-args FALCOSECURITY_LIBS_DRIVER_VERSION=${FALCOSECURITY_LIBS_DRIVER_VERSION} --build-args FALCOSECURITY_LIBS_VERSION=${FALCOSECURITY_LIBS_VERSION} --build-args=${FALCOSECURITY_LIBS_CHECKSUM} -f ./docker/falco/Dockerfile -t falcosecurity/driver ."
 
-LABEL usage="docker run -i -t --privileged -v /var/run/docker.sock:/host/var/run/docker.sock -v /dev:/host/dev -v /proc:/host/proc:ro -v /boot:/host/boot:ro -v /lib/modules:/host/lib/modules:ro -v /usr:/host/usr:ro -v /etc:/host/etc --name NAME IMAGE"
-
-ARG FALCO_VERSION=latest
 ARG VERSION_BUCKET=deb
 ENV VERSION_BUCKET=${VERSION_BUCKET}
 
-ENV FALCO_VERSION=${FALCO_VERSION}
 ENV HOST_ROOT /host
 ENV HOME /root
 
@@ -78,18 +88,6 @@ RUN rm -rf /usr/bin/clang \
 	&& ln -s /usr/bin/clang-7 /usr/bin/clang \
 	&& ln -s /usr/bin/llc-7 /usr/bin/llc
 
-RUN curl -s https://falco.org/repo/falcosecurity-3672BA8F.asc | apt-key add - \
-	&& echo "deb https://download.falco.org/packages/${VERSION_BUCKET} stable main" | tee -a /etc/apt/sources.list.d/falcosecurity.list \
-	&& apt-get update -y \
-	&& if [ "$FALCO_VERSION" = "latest" ]; then apt-get install -y --no-install-recommends falco; else apt-get install -y --no-install-recommends falco=${FALCO_VERSION}; fi \
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
-
-# Change the falco config within the container to enable ISO 8601
-# output.
-RUN sed -e 's/time_format_iso_8601: false/time_format_iso_8601: true/' < /etc/falco/falco.yaml > /etc/falco/falco.yaml.new \
-	&& mv /etc/falco/falco.yaml.new /etc/falco/falco.yaml
-
 # Some base images have an empty /lib/modules by default
 # If it's not empty, docker build will fail instead of
 # silently overwriting the existing directory
@@ -106,7 +104,14 @@ RUN curl -L -o binutils_2.30-22_amd64.deb https://download.falco.org/dependencie
 	&& dpkg -i *binutils*.deb \
 	&& rm -f *binutils*.deb
 
-COPY ./docker-entrypoint.sh /
+# Copy and configure the driver loader
+COPY ./scripts/falco-driver-loader /usr/bin/
+RUN sed -i -E "s/@PROBE_VERSION@/\"${FALCOSECURITY_LIBS_DRIVER_VERSION}\"/" /usr/bin/falco-driver-loader && \
+    sed -i -E "s/@FALCO_VERSION@/\"${FALCOSECURITY_LIBS_VERSION}\"/" /usr/bin/falco-driver-loader && \
+	sed -i -E "s/@PROBE_NAME@/\"${DRIVER_PACKAGE_NAME}\"/" /usr/bin/falco-driver-loader && \
+	chmod +x /usr/bin/falco-driver-loader
+
+COPY ./docker/falco/docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

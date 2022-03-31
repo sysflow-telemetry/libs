@@ -111,7 +111,7 @@ RUN sed -i -E "s/@PROBE_VERSION@/\"${FALCOSECURITY_LIBS_DRIVER_VERSION}\"/" /usr
 	sed -i -E "s/@PROBE_NAME@/\"${DRIVER_PACKAGE_NAME}\"/" /usr/bin/falco-driver-loader && \
 	chmod +x /usr/bin/falco-driver-loader
 
-COPY ./docker/falco/docker-entrypoint.sh /
+COPY ./docker/driver-loader/docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

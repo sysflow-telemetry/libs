@@ -18,7 +18,6 @@ LABEL "io.k8s.description"="Falco Libs implements userspace libraries and driver
 LABEL maintainer="cncf-falco-dev@lists.cncf.io"
 LABEL usage="docker build --build-args FALCOSECURITY_LIBS_DRIVER_VERSION=${FALCOSECURITY_LIBS_DRIVER_VERSION} --build-args FALCOSECURITY_LIBS_VERSION=${FALCOSECURITY_LIBS_VERSION} --build-args=${FALCOSECURITY_LIBS_CHECKSUM} -f ./docker/libs/Dockerfile -t falcosecurity/libs ."
 
-COPY ./common /build/common
 COPY ./driver /build/driver
 COPY ./userspace /build/userspace
 COPY ./cmake /build/cmake

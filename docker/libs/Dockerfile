@@ -25,7 +25,7 @@ COPY ./scripts /build/scripts
 COPY ./CMakeLists.txt /build/
 
 RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
-    apt-get update && apt install -y --no-install-recommends \
+    apt update && apt install -y --no-install-recommends \
         git \
         cmake \
         build-essential \
@@ -33,6 +33,8 @@ RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
         autoconf \
         libtool \
         libelf-dev && \
+    apt install -y --reinstall ca-certificates && \
+    git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt && \
     cmake -DPROBE_VERSION=${FALCOSECURITY_LIBS_DRIVER_VERSION} \
         -DDRIVER_NAME=${DRIVER_NAME} \
         -DDRIVER_PACKAGE_NAME=${DRIVER_PACKAGE_NAME} \

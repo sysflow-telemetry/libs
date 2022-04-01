@@ -52,7 +52,3 @@ RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
     make install && rm -rf /build && \
     wget https://go.dev/dl/go1.17.7.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.17.7.linux-amd64.tar.gz && rm -rf /var/lib/apt/lists/*
-
-
-RUN wget https://go.dev/dl/go1.17.7.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.17.7.linux-amd64.tar.gz && mkdir -p $SRC_ROOT

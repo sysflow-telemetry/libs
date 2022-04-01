@@ -24,6 +24,9 @@ COPY ./cmake /build/cmake
 COPY ./scripts /build/scripts
 COPY ./CMakeLists.txt /build/
 
+ENV PATH=$PATH:/usr/local/go/bin/
+ENV GOPATH=/go/
+
 RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
     apt update && apt install -y --no-install-recommends \
         git \
@@ -46,4 +49,10 @@ RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
         -DCMAKE_BUILD_TYPE=Release -DPROBE_NAME=${DRIVER_NAME} \
         -DBUILD_BPF=OFF  \
         -DBUILD_DRIVER=OFF ../. && \
-    make install && rm -rf /build && rm -rf /var/lib/apt/lists/*
+    make install && rm -rf /build && \
+    wget https://go.dev/dl/go1.17.7.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.17.7.linux-amd64.tar.gz && rm -rf /var/lib/apt/lists/*
+
+
+RUN wget https://go.dev/dl/go1.17.7.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.17.7.linux-amd64.tar.gz && mkdir -p $SRC_ROOT

@@ -35,7 +35,8 @@ RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
         pkg-config \
         autoconf \
         libtool \
-        libelf-dev && \
+        libelf-dev \
+        wget && \
     apt install -y --reinstall ca-certificates && \
     git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt && \
     cmake -DPROBE_VERSION=${FALCOSECURITY_LIBS_DRIVER_VERSION} \

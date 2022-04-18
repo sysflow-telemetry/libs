@@ -29,10 +29,10 @@ ENV GOPATH=/go/
 
 ENV FALCOSECURITY_LIBS_LIB_PREFIX=/usr/lib/x86_64-linux-gnu/falcosecurity
 ENV FALCOSECURITY_LIBS_INCLUDE_PREFIX=/usr/include/falcosecurity
-ENV FALCOSECURITY_LIBS_CFLAGS = -I$(FALCOSECURITY_LIBS_INCLUDE_PREFIX)/ \
-                                -I$(FALCOSECURITY_LIBS_INCLUDE_PREFIX)/userspace/libsinsp \
-                                -I$(FALCOSECURITY_LIBS_INCLUDE_PREFIX)/userspace/libscap
-ENV FALCOSECURITY_LIBS_LDFLAGS = -L$(FALCOSECURITY_LIBS_LIB_PREFIX)/ \
+ENV FALCOSECURITY_LIBS_CFLAGS='-I$(FALCOSECURITY_LIBS_INCLUDE_PREFIX)/ \
+                               -I$(FALCOSECURITY_LIBS_INCLUDE_PREFIX)/userspace/libsinsp \
+                               -I$(FALCOSECURITY_LIBS_INCLUDE_PREFIX)/userspace/libscap'
+ENV FALCOSECURITY_LIBS_LDFLAGS='-L$(FALCOSECURITY_LIBS_LIB_PREFIX)/ \
                                 $(FALCOSECURITY_LIBS_LIB_PREFIX)/libsinsp.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libscap.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libjq.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libonig.a \
                                 $(FALCOSECURITY_LIBS_LIB_PREFIX)/libb64.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libcurl.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libtbb.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libgrpc++.a \
                                 $(FALCOSECURITY_LIBS_LIB_PREFIX)/libgrpc++_alts.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libgrpc++_reflection.a  $(FALCOSECURITY_LIBS_LIB_PREFIX)/libgrpc++_error_details.a \
@@ -55,7 +55,7 @@ ENV FALCOSECURITY_LIBS_LDFLAGS = -L$(FALCOSECURITY_LIBS_LIB_PREFIX)/ \
                                 $(FALCOSECURITY_LIBS_LIB_PREFIX)/libabsl_bad_optional_access.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libabsl_time.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libabsl_time_zone.a \
                                 $(FALCOSECURITY_LIBS_LIB_PREFIX)/libabsl_int128.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libabsl_stacktrace.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libabsl_symbolize.a \
                                 $(FALCOSECURITY_LIBS_LIB_PREFIX)/libabsl_debugging_internal.a $(FALCOSECURITY_LIBS_LIB_PREFIX)/libabsl_demangle_internal.a \
-		                        -lelf -lstdc++ -lz -lrt -lanl -lssl -lcrypto -lpthread -lm -ldl -lupb -laddress_sorting -lre2
+		                        -lelf -lstdc++ -lz -lrt -lanl -lssl -lcrypto -lpthread -lm -ldl -lupb -laddress_sorting -lre2'
 
 RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
     apt update && apt install -y --no-install-recommends \

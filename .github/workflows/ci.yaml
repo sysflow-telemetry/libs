@@ -53,7 +53,7 @@ jobs:
             FALCOSECURITY_LIBS_CHECKSUM=${{ env.FALCOSECURITY_LIBS_CHECKSUM }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  docker-driver-loader:
+  docker-runtime:
     runs-on: ubuntu-latest
     permissions:
       contents: read

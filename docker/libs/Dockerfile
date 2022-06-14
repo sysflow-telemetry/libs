@@ -77,7 +77,11 @@ RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
         -DFALCOSECURITY_LIBS_VERSION=${FALCOSECURITY_LIBS_VERSION} \
         -DFALCOSECURITY_LIBS_CHECKSUM=${FALCOSECURITY_LIBS_CHECKSUM} \
         -DCMAKE_INSTALL_PREFIX=/usr/ \
-        -DCMAKE_BUILD_TYPE=Release -DPROBE_NAME=${DRIVER_NAME} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DUSE_BUNDLED_GTEST=ON \
+        -DUSE_BUNDLED_DEPS=ON \
+        -DCREATE_TEST_TARGETS=OFF \
+        -DPROBE_NAME=${DRIVER_NAME} \
         -DBUILD_BPF=OFF  \
         -DBUILD_DRIVER=OFF ../. && \
     make install && \

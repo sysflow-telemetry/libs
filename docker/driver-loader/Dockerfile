@@ -106,9 +106,9 @@ RUN curl -L -o binutils_2.30-22_amd64.deb https://download.falco.org/dependencie
 
 # Copy and configure the driver loader
 COPY ./scripts/falco-driver-loader /usr/bin/
-RUN sed -i -E "s/@PROBE_VERSION@/\"${FALCOSECURITY_LIBS_DRIVER_VERSION}\"/" /usr/bin/falco-driver-loader && \
+RUN sed -i -E "s/@DRIVER_VERSION@/\"${FALCOSECURITY_LIBS_DRIVER_VERSION}\"/" /usr/bin/falco-driver-loader && \
     sed -i -E "s/@FALCO_VERSION@/\"${FALCOSECURITY_LIBS_VERSION}\"/" /usr/bin/falco-driver-loader && \
-	sed -i -E "s/@PROBE_NAME@/\"${DRIVER_PACKAGE_NAME}\"/" /usr/bin/falco-driver-loader && \
+	sed -i -E "s/@DRIVER_NAME@/\"${DRIVER_PACKAGE_NAME}\"/" /usr/bin/falco-driver-loader && \
 	chmod +x /usr/bin/falco-driver-loader
 
 COPY ./docker/driver-loader/docker-entrypoint.sh /

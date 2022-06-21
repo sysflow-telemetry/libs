@@ -69,7 +69,7 @@ RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
         wget && \
     apt install -y --reinstall ca-certificates && \
     git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt && \
-    cmake -DPROBE_VERSION=${FALCOSECURITY_LIBS_DRIVER_VERSION} \
+    cmake -DDRIVER_VERSION=${FALCOSECURITY_LIBS_DRIVER_VERSION} \
         -DDRIVER_NAME=${DRIVER_NAME} \
         -DDRIVER_PACKAGE_NAME=${DRIVER_PACKAGE_NAME} \
         -DSCAP_BPF_PROBE_ENV_VAR_NAME=${SCAP_BPF_PROBE_ENV_VAR_NAME} \
@@ -81,7 +81,6 @@ RUN cd build && mkdir -p build && cd build && mkdir -p /usr/local/ && \
         -DUSE_BUNDLED_GTEST=ON \
         -DUSE_BUNDLED_DEPS=ON \
         -DCREATE_TEST_TARGETS=OFF \
-        -DPROBE_NAME=${DRIVER_NAME} \
         -DBUILD_BPF=OFF  \
         -DBUILD_DRIVER=OFF ../. && \
     make install && \
